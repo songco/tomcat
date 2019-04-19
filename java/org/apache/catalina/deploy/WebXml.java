@@ -59,6 +59,8 @@ public class WebXml {
     protected static final String ORDER_OTHERS =
         "org.apache.catalina.order.others";
 
+    private static final boolean ALLOW_DUPLICATE_FRAGMENT = Boolean.getBoolean("org.apache.catalina.deploy.allowDuplicateFragment");
+
     private static final StringManager sm =
         StringManager.getManager(Constants.Package);
 
@@ -2334,7 +2336,7 @@ public class WebXml {
         } else {
             // Stage 0. Check there were no fragments with duplicate names
             for (WebXml fragment : fragments.values()) {
-                if (fragment.isDuplicated()) {
+                if (fragment.isDuplicated() && !ALLOW_DUPLICATE_FRAGMENT) {
                     throw new IllegalArgumentException(
                             sm.getString("webXml.duplicateFragment", fragment.getName()));
                 }
